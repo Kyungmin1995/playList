@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   faPlay,
   faBackwardStep,
@@ -14,10 +15,8 @@ import { useEffect } from "react";
 import { useRef } from "react";
 
 function App() {
-  const [song] = useState(data);
-  let i = 1;
+  const [list, setList] = useState(data);
   let [isClick, setClick] = useState(0);
-  let [isImg, setImg] = useState(0);
   let [play, setPlay] = useState(false);
   const playRef = useRef(null);
   let totalRef = useRef(null);
@@ -28,30 +27,25 @@ function App() {
   useEffect(() => {
     if (play) playAudio();
     else stopAudio();
-    console.log(isImg);
   }, [play, isClick]);
 
   function prevSong() {
     //이전
     if (isClick < 1) {
-      setClick(song.length - 1);
-      setImg(song.length - 1);
+      setClick(list.length - 1);
       return;
     }
     setClick((state) => state - 1);
-    setImg((state) => state - 1);
-    setPlay(true);
+    // setPlay(true);
   }
   function nextSong() {
     //다음
-    if (isClick > song.length - 2) {
+    if (isClick > list.length - 2) {
       setClick(0);
-      setImg(0);
       return;
     }
     setClick((state) => state + 1);
-    setImg((state) => state + 1);
-    setPlay(true);
+    // setPlay(true);
   }
 
   function playAudio() {
@@ -74,8 +68,21 @@ function App() {
       currentRef.current.innerHTML = playRef.current.currentTime;
       progressRef.current.value = playRef.current.currentTime;
       progressRef.current.max = playRef.current.duration;
+      if (playRef.current.currentTime === playRef.current.duration) {
+        console.log("같노");
+        setClick((state) => state + 1);
+      }
     });
   }
+  const handleChange = (result) => {
+    if (!result.destination) return;
+    const items = [...list]; // 새배열담기
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setList(items);
+    setClick(result.destination.index);
+    // console.log(result, "드래그결과");
+  };
 
   return (
     <div className="App">
@@ -85,7 +92,11 @@ function App() {
       </div>
 
       <div className="music_con">
-        <audio id="myAudio" src={`music/item_${isClick}.mp3`} ref={playRef} />
+        <audio
+          id="myAudio"
+          src={`music/item_${list[isClick].id}.mp3`}
+          ref={playRef}
+        />
         <div className="top_con">
           <div className="close"></div>
           <p className="title">재생목록</p>
@@ -96,51 +107,71 @@ function App() {
           <p>타임머신</p>
         </div>
 
-        <div className="list_con">
-          <p className="pd_bottom"></p>
-          {song.map((current, i) => {
-            return (
+        <DragDropContext onDragEnd={handleChange}>
+          <Droppable droppableId="list">
+            {(provided) => (
               <div
-                className={
-                  isClick == current.id ? "click music_box" : "music_box"
-                }
-                key={current.id}
-                onClick={(e) => {
-                  setClick(current.id);
-                  setImg(current.id);
-                  setPlay(true);
-                }}
+                className="list list_con"
+                {...provided.droppableProps}
+                ref={provided.innerRef}
               >
-                <div className="music_img ">
-                  <div
-                    className={
-                      isClick == current.id && play ? "play_icon" : "none"
-                    }
-                  >
-                    <span>1</span>
-                    <span>2</span>
-                    <span>3</span>
-                  </div>
-                  <img
-                    src={"img/item_" + current.id + ".jpg"}
-                    width="100%"
-                    alt=""
-                  />
-                </div>
-                <div className="music_text">
-                  <div>
-                    <p className="name">{current.제목}</p>
-                    <p className="text">
-                      <span>{current.가수}</span>
-                      <span>{current.subName}</span>
-                    </p>
-                  </div>
-                  <p className="text time">{current.시간}</p>
-                </div>
+                {list.map(({ id, 제목, 가수, subName, 시간 }, index) => (
+                  <Draggable key={id} draggableId={id} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.dragHandleProps}
+                        {...provided.draggableProps}
+                        key={id}
+                      >
+                        <div
+                          className={
+                            isClick == index ? "click music_box" : "music_box"
+                          }
+                          key={id}
+                          onClick={(e) => {
+                            console.log(index, "클릭한거");
+                            setClick(index);
+                            setPlay(true);
+                          }}
+                        >
+                          <div className="music_img ">
+                            <div
+                              className={
+                                isClick == index && play ? "play_icon" : "none"
+                              }
+                            >
+                              <span>1</span>
+                              <span>2</span>
+                              <span>3</span>
+                            </div>
+                            <img
+                              src={"img/item_" + Number(id) + ".jpg"}
+                              width="100%"
+                              alt=""
+                            />
+                          </div>
+                          <div className="music_text">
+                            <div>
+                              <p className="name">{제목}</p>
+                              <p className="text">
+                                <span>{가수}</span>
+                                <span>{subName}</span>
+                              </p>
+                            </div>
+                            <p className="text time">{시간}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+
+                {provided.placeholder}
               </div>
-            );
-          })}
-        </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
 
       <div className="footer">
@@ -192,7 +223,8 @@ function App() {
             onClick={nextSong}
           />
           <div className="music_img_con">
-            <img src={`img/item_${isImg}.jpg`} width="100%" alt="" />
+            <img src={`img/item_${list[isClick].id}.jpg`} width="100%" alt="" />
+            {/* 썸네일 */}
           </div>
         </div>
       </div>
