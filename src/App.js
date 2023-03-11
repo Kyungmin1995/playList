@@ -178,62 +178,59 @@ function App() {
             )}
           </Droppable>
         </DragDropContext>
-        <div className="footer">
-          <div className="progressbar_con">
-            <input
-              type="range"
-              id="progress"
-              value={value}
-              ref={progressRef}
-              className={play == false ? "play__range" : "opacity play__range"}
-              onChange={(e) => {
-                playRef.current.currentTime = e.target.value;
-                playAudio();
-                setValue(playRef.current.currentTime);
-              }}
-            />
+      </div>
+
+      <div className="footer">
+        <div className="progressbar_con">
+          <input
+            type="range"
+            id="progress"
+            value={value}
+            ref={progressRef}
+            className={play == false ? "play__range" : "opacity play__range"}
+            onChange={(e) => {
+              playRef.current.currentTime = e.target.value;
+              playAudio();
+              setValue(playRef.current.currentTime);
+            }}
+          />
+        </div>
+
+        <div className="play_con">
+          <div
+            className="music_detail"
+            style={{ background: "url(detail.png)center no-repeat" }}
+          ></div>
+          <FontAwesomeIcon
+            icon={faBackwardStep}
+            className="faPrev"
+            onClick={prevSong}
+          />
+
+          <div>
+            {play == false ? (
+              <FontAwesomeIcon
+                icon={faPlay}
+                className="faPlay"
+                onClick={playAudio}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faPause}
+                className="faStop"
+                onClick={stopAudio}
+              />
+            )}
           </div>
 
-          <div className="play_con">
-            <div
-              className="music_detail"
-              style={{ background: "url(detail.png)center no-repeat" }}
-            ></div>
-            <FontAwesomeIcon
-              icon={faBackwardStep}
-              className="faPrev"
-              onClick={prevSong}
-            />
-
-            <div>
-              {play == false ? (
-                <FontAwesomeIcon
-                  icon={faPlay}
-                  className="faPlay"
-                  onClick={playAudio}
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faPause}
-                  className="faStop"
-                  onClick={stopAudio}
-                />
-              )}
-            </div>
-
-            <FontAwesomeIcon
-              icon={faForwardStep}
-              className="faNext"
-              onClick={nextSong}
-            />
-            <div className="music_img_con">
-              <img
-                src={`img/item_${list[isClick].id}.jpg`}
-                width="100%"
-                alt=""
-              />
-              {/* 썸네일 */}
-            </div>
+          <FontAwesomeIcon
+            icon={faForwardStep}
+            className="faNext"
+            onClick={nextSong}
+          />
+          <div className="music_img_con">
+            <img src={`img/item_${list[isClick].id}.jpg`} width="100%" alt="" />
+            {/* 썸네일 */}
           </div>
         </div>
       </div>

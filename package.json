@@ -1,6 +1,6 @@
 {
   "name": "music",
-  "homepage": "http://rudals95.github.io/player",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
