@@ -74,9 +74,10 @@ function App() {
       // currentRef.current.innerHTML = playRef.current.currentTime;
       progressRef.current.value = playRef.current.currentTime;
       progressRef.current.max = playRef.current.duration;
+
       if (playRef.current.currentTime === playRef.current.duration) {
-        console.log("같노");
-        setClick((state) => state + 1);
+        if (isClick > list.length - 2) setClick(0);
+        else setClick((state) => state + 1);
       }
     });
   }
@@ -87,7 +88,6 @@ function App() {
     items.splice(result.destination.index, 0, reorderedItem);
     setList(items);
     setClick(result.destination.index);
-    console.log(result, "드래그결과");
   };
 
   return (

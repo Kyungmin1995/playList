@@ -171,15 +171,14 @@ body {
   z-index: 2;
 }
 .list_con {
-  /* position: fixed; */
+  position: fixed;
   width: 100%;
   max-width: 648px;
   box-sizing: border-box;
-  top: 160px;
-  /* overflow-y: auto; */
+  top: 140px;
+  overflow-y: auto;
   height: calc(100% - 146px);
   padding-bottom: 146px;
-  padding-top: 140px;
 }
 .music_con {
   max-width: 648px;
@@ -356,19 +355,19 @@ input[type="range"]::-webkit-slider-thumb {
 }
 .play_icon span:nth-child(1) {
   animation-name: play_1;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
   animation-iteration-count: infinite;
   /* height: 80%; */
 }
 .play_icon span:nth-child(2) {
   animation-name: play_2;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
   animation-iteration-count: infinite;
   /* height: 100%; */
 }
 .play_icon span:nth-child(3) {
   animation-name: play_3;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
   animation-iteration-count: infinite;
   height: 70%;
 }
