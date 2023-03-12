@@ -157,17 +157,32 @@ body {
 }
 
 .footer {
-  position: sticky;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  left: 0;
   background: #fff;
   margin: 0 auto;
   max-width: 648px;
 }
+.header {
+  position: fixed;
+  max-width: 648px;
+  width: 100%;
+  z-index: 2;
+}
+.list_con {
+  /* position: fixed; */
+  width: 100%;
+  max-width: 648px;
+  box-sizing: border-box;
+  top: 160px;
+  /* overflow-y: auto; */
+  height: calc(100% - 146px);
+  padding-bottom: 146px;
+  padding-top: 140px;
+}
 .music_con {
   max-width: 648px;
-  height: 840px;
   overflow-y: scroll;
   background: #fff;
   margin: 0 auto;

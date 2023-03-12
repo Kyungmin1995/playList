@@ -70,8 +70,8 @@ function App() {
   function timeUpdate() {
     //재생바
     playRef.current.addEventListener("timeupdate", () => {
-      totalRef.current.innerHTML = playRef.current.duration;
-      currentRef.current.innerHTML = playRef.current.currentTime;
+      // totalRef.current.innerHTML = playRef.current.duration;
+      // currentRef.current.innerHTML = playRef.current.currentTime;
       progressRef.current.value = playRef.current.currentTime;
       progressRef.current.max = playRef.current.duration;
       if (playRef.current.currentTime === playRef.current.duration) {
@@ -92,10 +92,10 @@ function App() {
 
   return (
     <div className="App">
-      <div>
+      {/* <div>
         <span id="current" ref={currentRef}></span> /{" "}
         <span id="total" ref={totalRef}></span>
-      </div>
+      </div> */}
 
       <div className="music_con">
         <audio
@@ -103,14 +103,16 @@ function App() {
           src={`music/item_${list[isClick].id}.mp3`}
           ref={playRef}
         />
-        <div className="top_con">
-          <div className="close"></div>
-          <p className="title">재생목록</p>
-        </div>
-        <div className="nav_con">
-          <p>곡</p>
-          <p>플레이리스트</p>
-          <p>타임머신</p>
+        <div className="header">
+          <div className="top_con">
+            <div className="close"></div>
+            <p className="title">재생목록</p>
+          </div>
+          <div className="nav_con">
+            <p>곡</p>
+            <p>플레이리스트</p>
+            <p>타임머신</p>
+          </div>
         </div>
 
         <DragDropContext onDragEnd={handleChange}>
@@ -178,59 +180,62 @@ function App() {
             )}
           </Droppable>
         </DragDropContext>
-      </div>
-
-      <div className="footer">
-        <div className="progressbar_con">
-          <input
-            type="range"
-            id="progress"
-            value={value}
-            ref={progressRef}
-            className={play == false ? "play__range" : "opacity play__range"}
-            onChange={(e) => {
-              playRef.current.currentTime = e.target.value;
-              playAudio();
-              setValue(playRef.current.currentTime);
-            }}
-          />
-        </div>
-
-        <div className="play_con">
-          <div
-            className="music_detail"
-            style={{ background: "url(detail.png)center no-repeat" }}
-          ></div>
-          <FontAwesomeIcon
-            icon={faBackwardStep}
-            className="faPrev"
-            onClick={prevSong}
-          />
-
-          <div>
-            {play == false ? (
-              <FontAwesomeIcon
-                icon={faPlay}
-                className="faPlay"
-                onClick={playAudio}
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon={faPause}
-                className="faStop"
-                onClick={stopAudio}
-              />
-            )}
+        <div className="footer">
+          <div className="progressbar_con">
+            <input
+              type="range"
+              id="progress"
+              value={value}
+              ref={progressRef}
+              className={play == false ? "play__range" : "opacity play__range"}
+              onChange={(e) => {
+                playRef.current.currentTime = e.target.value;
+                playAudio();
+                setValue(playRef.current.currentTime);
+              }}
+            />
           </div>
 
-          <FontAwesomeIcon
-            icon={faForwardStep}
-            className="faNext"
-            onClick={nextSong}
-          />
-          <div className="music_img_con">
-            <img src={`img/item_${list[isClick].id}.jpg`} width="100%" alt="" />
-            {/* 썸네일 */}
+          <div className="play_con">
+            <div
+              className="music_detail"
+              style={{ background: "url(detail.png)center no-repeat" }}
+            ></div>
+            <FontAwesomeIcon
+              icon={faBackwardStep}
+              className="faPrev"
+              onClick={prevSong}
+            />
+
+            <div>
+              {play == false ? (
+                <FontAwesomeIcon
+                  icon={faPlay}
+                  className="faPlay"
+                  onClick={playAudio}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faPause}
+                  className="faStop"
+                  onClick={stopAudio}
+                />
+              )}
+            </div>
+
+            <FontAwesomeIcon
+              icon={faForwardStep}
+              className="faNext"
+              onClick={nextSong}
+            />
+            <div className="music_img_con">
+              <img
+                src={`img/item_${list[isClick].id}.jpg`}
+                width="100%"
+                alt=""
+              />
+              {/* 썸네일 */}
+            </div>
           </div>
         </div>
       </div>
