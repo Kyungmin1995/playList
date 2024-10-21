@@ -20,4 +20,4 @@ react 로 만든 음악 재생 웹
 
 
 ## 주소 
-https://rudals95.github.io/
+https://kyungmin1995.github.io/playList/
